@@ -1,4 +1,4 @@
-package fr.swansky.bankxp.multiParamCommand;
+package fr.swansky.bankxp.core;
 
 import java.util.ArrayList;
 import java.util.List;

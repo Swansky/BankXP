@@ -1,6 +1,6 @@
 package fr.swansky.bankxp.utils;
 
-import fr.swansky.bankxp.multiParamCommand.ValidatorException;
+import fr.swansky.bankxp.core.ValidatorException;
 import org.bukkit.entity.Player;
 
 

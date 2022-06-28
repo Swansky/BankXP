@@ -1,4 +1,4 @@
-package fr.swansky.bankxp.multiParamCommand;
+package fr.swansky.bankxp.core;
 
 public class ValidatorException extends Exception {
     public ValidatorException(String message, Object... arg) {

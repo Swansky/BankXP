@@ -1,9 +1,9 @@
 package fr.swansky.bankxp.commands;
 
 import fr.swansky.bankxp.config.YMLConfigBankXP;
-import fr.swansky.bankxp.multiParamCommand.ArgumentParam;
-import fr.swansky.bankxp.multiParamCommand.CommandParameter;
-import fr.swansky.bankxp.multiParamCommand.UserConfigurableCommand;
+import fr.swansky.bankxp.core.ArgumentParam;
+import fr.swansky.bankxp.core.CommandParameter;
+import fr.swansky.bankxp.core.UserConfigurableCommand;
 import fr.swansky.bankxp.utils.ParamValidatorUtils;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;

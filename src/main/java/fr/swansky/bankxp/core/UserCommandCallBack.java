@@ -1,4 +1,4 @@
-package fr.swansky.bankxp.multiParamCommand;
+package fr.swansky.bankxp.core;
 
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
