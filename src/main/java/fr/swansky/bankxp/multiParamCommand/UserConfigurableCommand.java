@@ -24,7 +24,7 @@ public abstract class UserConfigurableCommand extends UserCommand implements Tab
             Optional<ArgumentParam> argumentOptional = parameter.getArgumentByName(args[0]);
             if (argumentOptional.isPresent()) {
                 ArgumentParam argumentParam = argumentOptional.get();
-                if (player.hasPermission(argumentParam.getPermission())) {
+                if (argumentParam.getPermission().isEmpty() || player.hasPermission(argumentParam.getPermission())) {
                     if (argumentParam.getNumberOfVariablesNeeded() <= args.length) {
                         int pos = 0;
                         List<Object> valuesParse = new ArrayList<>();
@@ -100,7 +100,8 @@ public abstract class UserConfigurableCommand extends UserCommand implements Tab
         if (args.length <= 1) {
             Collection<ArgumentParam> arguments = parameter.getArguments();
             for (ArgumentParam argument : arguments) {
-                values.add(argument.getName());
+                if (argument.getPermission().isEmpty() || sender.hasPermission(argument.getPermission()))
+                    values.add(argument.getName());
             }
         } else {
             Optional<ArgumentParam> argumentValueAtPosition = parameter.getArgumentValueAtPosition(args[0]);

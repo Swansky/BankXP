@@ -143,22 +143,21 @@ public final class BankXPCommand extends UserConfigurableCommand {
                 .addValidator(ParamValidatorUtils::CannotBeSubOne);
         argumentParam.addOrderVariable("player", Player.class);
 
-        ArgumentParam argumentParamTransfer = parameter.registerArgument("transfer", this::transferXP, "bankxp.transfer");
+        ArgumentParam argumentParamTransfer = parameter.registerArgument("transfer", this::transferXP, "");
         argumentParamTransfer.addOrderVariable("amount", XP_AMOUNT_TYPE)
                 .addValidator(ParamValidatorUtils::CannotBeSubOne);
         argumentParamTransfer.addOrderVariable("player", Player.class)
                 .addValidator(ParamValidatorUtils::ExecutorCannotByTheSame);
 
-
-        ArgumentParam argumentParamWithDraw = parameter.registerArgument("withdraw", this::withdrawXP, "bankxp.withdraw");
+        ArgumentParam argumentParamWithDraw = parameter.registerArgument("withdraw", this::withdrawXP, "");
         argumentParamWithDraw.addOrderVariable("amount", XP_AMOUNT_TYPE)
                 .addValidator(ParamValidatorUtils::CannotBeSubOne);
 
-        ArgumentParam argumentParamDeposit = parameter.registerArgument("deposit", this::depositXP, "bankxp.deposit");
+        ArgumentParam argumentParamDeposit = parameter.registerArgument("deposit", this::depositXP, "");
         argumentParamDeposit.addOrderVariable("amount", XP_AMOUNT_TYPE)
                 .addValidator(ParamValidatorUtils::CannotBeSubOne);
 
-        parameter.registerArgument("balance", this::balanceXP, "bankxp.balance");
+        parameter.registerArgument("balance", this::balanceXP, "");
 
         return parameter;
     }
