@@ -45,3 +45,31 @@ processResources {
         expand props
     }
 }
+
+
+project.getGradle().addBuildListener(new BuildListener() {
+
+
+    @Override
+    void settingsEvaluated(Settings settings) {
+
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradle) {
+
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+
+    }
+
+    @Override
+    void buildFinished(BuildResult buildResult) {
+        copy {
+            from 'build/libs/' + rootProject.name + '-' + getVersion() + '.jar'
+            into "server/plugins"
+        }
+    }
+});
