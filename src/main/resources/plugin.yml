@@ -1,0 +1,11 @@
+name: BankXP
+version: '${version}'
+main: fr.swansky.bankxp.BankXP
+api-version: 1.19
+authors: [ Swansky ]
+description: bank xp
+commands:
+  xpbank:
+    usage: /xpbank
+    description: xpbank
+
