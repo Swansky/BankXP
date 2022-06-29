@@ -1,5 +1,6 @@
 package fr.swansky.bankxp.core;
 
+import fr.swansky.bankxp.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -38,10 +39,12 @@ public abstract class UserConfigurableCommand extends UserCommand implements Tab
                                         validator.validate(valueParse, player, variableParam.getName());
                                     }
                                 } catch (IllegalArgumentException e) {
-                                    player.sendMessage(String.format("The value enter for parameter '%s' is not valid.", variableParam.getName()));
+                                    player.sendMessage(
+                                            MessageUtils.WarningMessage(
+                                                    String.format("The value enter for parameter '%s' is not valid.", variableParam.getName())));
                                     return true;
                                 } catch (ValidatorException e) {
-                                    player.sendMessage(e.getMessage());
+                                    player.sendMessage(MessageUtils.WarningMessage(e.getMessage()));
                                     return true;
                                 }
                             }
@@ -50,14 +53,14 @@ public abstract class UserConfigurableCommand extends UserCommand implements Tab
 
                         return argumentParam.getCallBack().onUserCommand(player, command, label, valuesParse);
                     } else {
-                        player.sendMessage("Invalid command missing parameters.");
+                        player.sendMessage(MessageUtils.ErrorMessage("Invalid command missing parameters."));
                     }
                 } else {
-                    player.sendMessage("You don't have the permission to execute this command.");
+                    player.sendMessage(MessageUtils.ErrorMessage("You don't have the permission to execute this command."));
                 }
 
             } else {
-                player.sendMessage("This argument is not valid");
+                player.sendMessage(MessageUtils.WarningMessage("This argument doesn't exist."));
             }
         }
         return true;
@@ -107,21 +110,22 @@ public abstract class UserConfigurableCommand extends UserCommand implements Tab
             Optional<ArgumentParam> argumentValueAtPosition = parameter.getArgumentValueAtPosition(args[0]);
             if (argumentValueAtPosition.isPresent()) {
                 ArgumentParam argumentParam = argumentValueAtPosition.get();
-
-                List<VariableParam<?>> variables = argumentParam.getVariables();
-                int pos = args.length - 2;
-                if (variables.size() > pos) {
-                    VariableParam<?> variableParam = variables.get(pos);
-                    if (variableParam.getVariableType().isAssignableFrom(Player.class)) {
-                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            values.add(onlinePlayer.getName());
+                if (argumentParam.getPermission().isEmpty() || sender.hasPermission(argumentParam.getPermission())) {
+                    List<VariableParam<?>> variables = argumentParam.getVariables();
+                    int pos = args.length - 2;
+                    if (variables.size() > pos) {
+                        VariableParam<?> variableParam = variables.get(pos);
+                        if (variableParam.getVariableType().isAssignableFrom(Player.class)) {
+                            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                                values.add(onlinePlayer.getName());
+                            }
+                        } else if (variableParam.getVariableType().isEnum()) {
+                            for (Object enumConstant : variableParam.getVariableType().getEnumConstants()) {
+                                values.add(enumConstant.toString().toLowerCase());
+                            }
+                        } else {
+                            values.add(variableParam.getName());
                         }
-                    } else if (variableParam.getVariableType().isEnum()) {
-                        for (Object enumConstant : variableParam.getVariableType().getEnumConstants()) {
-                            values.add(enumConstant.toString().toLowerCase());
-                        }
-                    } else {
-                        values.add(variableParam.getName());
                     }
                 }
             }

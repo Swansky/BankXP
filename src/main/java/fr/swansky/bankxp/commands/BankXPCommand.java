@@ -4,6 +4,7 @@ import fr.swansky.bankxp.config.YMLConfigBankXP;
 import fr.swansky.bankxp.core.ArgumentParam;
 import fr.swansky.bankxp.core.CommandParameter;
 import fr.swansky.bankxp.core.UserConfigurableCommand;
+import fr.swansky.bankxp.utils.MessageUtils;
 import fr.swansky.bankxp.utils.ParamValidatorUtils;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -23,7 +24,9 @@ public final class BankXPCommand extends UserConfigurableCommand {
 
     private boolean balanceXP(Player player, Command command, @NotNull String s, @NotNull List<Object> objects) {
         UserBankXP bank = getBankOfUser(player);
-        player.sendMessage(String.format("actual balance %s levels (%s points)", (int) getLevelFromExp(bank.getXpPoint()), bank.getXpPoint()));
+        player.sendMessage(
+                MessageUtils.InfoMessage(
+                        String.format("actual balance %s levels (%s points)", (int) getLevelFromExp(bank.getXpPoint()), bank.getXpPoint())));
         return true;
     }
 
@@ -34,7 +37,7 @@ public final class BankXPCommand extends UserConfigurableCommand {
         UserBankXP ownerBank = getBankOfUser(player);
 
         if (amount > ownerBank.getXpPoint()) {
-            player.sendMessage("You don't have enough xp point ! ");
+            player.sendMessage(MessageUtils.InfoMessage("You don't have enough xp point ! "));
         } else {
             UserBankXP receiverBank = getBankOfUser(playerToTransfer);
             ownerBank.removeXP(amount);
@@ -42,8 +45,8 @@ public final class BankXPCommand extends UserConfigurableCommand {
             ymlConfigBankXP.write(ownerBank);
             ymlConfigBankXP.write(receiverBank);
             ymlConfigBankXP.save();
-            player.sendMessage(String.format("You has transferred %s xp points", amount));
-            playerToTransfer.sendMessage(String.format("You has received %s xp points", amount));
+            player.sendMessage(MessageUtils.InfoMessage(String.format("You has transferred %s xp points", amount)));
+            playerToTransfer.sendMessage(MessageUtils.InfoMessage(String.format("You has received %s xp points", amount)));
         }
 
         return true;
@@ -55,13 +58,13 @@ public final class BankXPCommand extends UserConfigurableCommand {
         UserBankXP bank = getBankOfUser(player);
 
         if (numberPointToDeposit > player.getTotalExperience()) {
-            player.sendMessage("You don't have enough xp level.");
+            player.sendMessage(MessageUtils.InfoMessage("You don't have enough xp level."));
         } else {
             bank.addXp(numberPointToDeposit);
             ymlConfigBankXP.writeWithSave(bank);
             player.giveExp(-numberPointToDeposit);
-            player.sendMessage("Your xp level has been deposited.");
-            player.sendMessage(String.format("actual balance %s levels (%s points)", (int) getLevelFromExp(bank.getXpPoint()), bank.getXpPoint()));
+            player.sendMessage(MessageUtils.InfoMessage("Your xp level has been deposited."));
+            player.sendMessage(MessageUtils.InfoMessage(String.format("actual balance %s levels (%s points)", (int) getLevelFromExp(bank.getXpPoint()), bank.getXpPoint())));
         }
         return true;
     }
@@ -72,14 +75,14 @@ public final class BankXPCommand extends UserConfigurableCommand {
         UserBankXP bank = getBankOfUser(player);
 
         if (numberPointToWithDraw > bank.getXpPoint()) {
-            player.sendMessage("You don't have enough xp level in your bank.");
+            player.sendMessage(MessageUtils.InfoMessage("You don't have enough xp level in your bank."));
         } else {
 
             bank.removeXP(numberPointToWithDraw);
             ymlConfigBankXP.writeWithSave(bank);
             player.giveExp(numberPointToWithDraw);
-            player.sendMessage("Your xp level have been added.");
-            player.sendMessage(String.format("actual balance %s (%s points)", (int) getLevelFromExp(bank.getXpPoint()), bank.getXpPoint()));
+            player.sendMessage(MessageUtils.InfoMessage("Your xp level have been added."));
+            player.sendMessage(MessageUtils.InfoMessage(String.format("actual balance %s (%s points)", (int) getLevelFromExp(bank.getXpPoint()), bank.getXpPoint())));
         }
         return true;
     }
@@ -93,8 +96,8 @@ public final class BankXPCommand extends UserConfigurableCommand {
         int expToNextLevel = getExpToNextLevel((int) getLevelFromExp(bank.getXpPoint()), amountLevelToAdd);
         bank.addXp(expToNextLevel);
         ymlConfigBankXP.writeWithSave(bank);
-        player.sendMessage(String.format("XP have been added to player %s ", playerToAdd.getName()));
-        playerToAdd.sendMessage(String.format("Your xp bank has been credited by %s for %s levels", player.getName(), amountLevelToAdd));
+        player.sendMessage(MessageUtils.InfoMessage(String.format("XP have been added to player %s ", playerToAdd.getName())));
+        playerToAdd.sendMessage(MessageUtils.InfoMessage(String.format("Your xp bank has been credited by %s for %s levels", player.getName(), amountLevelToAdd)));
         return true;
     }
 
